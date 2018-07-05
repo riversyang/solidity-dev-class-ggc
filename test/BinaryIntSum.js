@@ -14,8 +14,11 @@ contract('BinaryIntSum', function(accounts) {
     after(async function() {
         var totalGas = 0;
         var instance = await instanceFuture;
+        var curGas = 0;
         for(var v of testdata.vectors) {
-            totalGas += await instance.runMinimalBinaryIntSum.estimateGas(v.input[0], {gas: v.gas}) - 21000;
+            curGas = await instance.runMinimalBinaryIntSum.estimateGas(v.input[0], {gas: v.gas}) - 21000;
+            console.log(curGas);
+            totalGas += curGas;
         }
         console.log("Total gas for BinaryIntSum: " + totalGas);
     });
