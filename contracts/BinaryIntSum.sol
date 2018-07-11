@@ -1,4 +1,4 @@
-pragma solidity 0.4.24;
+pragma solidity ^0.4.24;
 
 contract BinaryIntSum {
 
@@ -22,7 +22,21 @@ contract BinaryIntSum {
      * @param input 给定的 uint16 类型的整数
      * @return 经变换后的新整数
      */
-    function getMinimalBinaryInt(uint16 input) internal pure returns(uint16) {
+    function getMinimalBinaryInt(uint16 input) internal pure returns(uint16 nv) {
 	    // To be completed
+        uint8 bitCount;
+        while (input != 0) {
+            input = input & (input - 1);
+            bitCount++;
+        }
+        nv = uint16(2) ** bitCount - 1;
+        // assembly {
+        //     let bitCount := 0
+        //     for {} iszero(iszero(input)) {} {
+        //         input := and(input, sub(input, 1))
+        //         bitCount := add(bitCount, 1)
+        //     }
+        //     nv := sub(exp(2, bitCount), 1)
+        // }
     }
 }
