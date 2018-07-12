@@ -18,18 +18,22 @@ contract BinaryIntSum {
     
     /**
      * @dev 将输入整数的所有二进制位重新排序，成为一个新的整数，使此整数数值尽量小
-     *
      * @param input 给定的 uint16 类型的整数
      * @return 经变换后的新整数
      */
     function getMinimalBinaryInt(uint16 input) internal pure returns(uint16 nv) {
 	    // To be completed
+
+        // standard
         uint8 bitCount;
-        while (input != 0) {
-            input = input & (input - 1);
+        nv = input;
+        while (nv != 0) {
+            nv = nv & (nv - 1);
             bitCount++;
         }
         nv = uint16(2) ** bitCount - 1;
+
+        // wild
         // assembly {
         //     let bitCount := 0
         //     for {} iszero(iszero(input)) {} {
