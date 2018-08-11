@@ -16,42 +16,14 @@ contract GasOptimizeSample {
     }
 
     function bet(uint256 _betNumber) public payable {
-        require(players.length < 5);
+        require(players.length < 10);
         players.push(msg.sender);
         numberBetPlayers[_betNumber].push(msg.sender);
         playerBetsNumber[msg.sender] = _betNumber;
         totalBets += msg.value;
-        if (players.length == 5) {
-            distributePrizes2(5);
+        if (players.length == 10) {
+            distributePrizes1(5);
         }
-    }
-
-    function clearState1() public {
-        // Delete all the players for each number
-        for (uint j = 1; j <= 10; j++) {
-            for (uint k = 0; k < numberBetPlayers[j].length; k++) {
-                playerBetsNumber[numberBetPlayers[j][k]] = 0;
-                numberBetPlayers[j][k] = 0;
-            }
-            numberBetPlayers[j].length = 0;
-        }
-        for (uint i = 0; i < players.length; i++) {
-            players[i] = 0;
-        }
-        players.length = 0;
-        totalBets = 0;
-    }
-
-    function clearState2() public {
-        // Delete all the players for each number
-        for (uint j = 1; j <= 10; j++) {
-            for (uint k = 0; k < numberBetPlayers[j].length; k++) {
-                playerBetsNumber[numberBetPlayers[j][k]] = 0;
-            }
-            delete numberBetPlayers[j];
-        }
-        delete players;
-        totalBets = 0;
     }
 
     function playerBalance() public view returns (uint256) {
@@ -77,16 +49,32 @@ contract GasOptimizeSample {
                 playerBalances[players[i]] += winnerBalance;
             }
         }
+        // clearState1();
+    }
+
+    function clearState1() public {
+        // Delete all the players for each number
+        for (uint j = 1; j <= 10; j++) {
+            for (uint k = 0; k < numberBetPlayers[j].length; k++) {
+                playerBetsNumber[numberBetPlayers[j][k]] = 0;
+                numberBetPlayers[j][k] = 0;
+            }
+            numberBetPlayers[j].length = 0;
+        }
+        for (uint i = 0; i < players.length; i++) {
+            players[i] = 0;
+        }
+        players.length = 0;
+        totalBets = 0;
     }
 
     function distributePrizes2(uint256 _numberWinner) private {
         // Calculate winner's balance amount
         uint256 winnerBalance;
-        uint256 winnerCount;
+        uint256 winnerCount = numberBetPlayers[_numberWinner].length;
         uint i;
 
-        if (numberBetPlayers[_numberWinner].length > 0) {
-            winnerCount = numberBetPlayers[_numberWinner].length;
+        if (winnerCount > 0) {
             winnerBalance = totalBets / winnerCount;
             // Apply rewards
             for (i = 0; i < winnerCount; i++) {
@@ -101,6 +89,19 @@ contract GasOptimizeSample {
                 playerBalances[players[i]] += winnerBalance;
             }
         }
+        // clearState2();
+    }
+
+    function clearState2() public {
+        // Delete all the players for each number
+        for (uint j = 1; j <= 10; j++) {
+            for (uint k = 0; k < numberBetPlayers[j].length; k++) {
+                playerBetsNumber[numberBetPlayers[j][k]] = 0;
+            }
+            delete numberBetPlayers[j];
+        }
+        delete players;
+        totalBets = 0;
     }
 
 }
