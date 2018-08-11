@@ -1,70 +1,70 @@
 var GasOptimizeSample = artifacts.require("../contracts/GasOptimizeSample");
-var testdata = require('../data/GasOptimizeSample.json');
 
 contract('GasOptimizeSample', function(accounts) {
     var instanceFuture = GasOptimizeSample.deployed();
-    testdata.vectors.forEach(function(v, i) {
-        var totalGas = 0;
-        it("Passes test vector " + i, async function() {
-            var instance = await instanceFuture;
-            await instance.initData(v.input[0], v.input[1], v.input[2], {gas: v.gas});
-            //
-            var curGas = 0;
-            curGas = await instance.distributePrizes.estimateGas(v.input[3], {gas: v.gas}) - 21000;
-            console.log(curGas);
-            //
-            var curBalance = 0;
-            for (var i = 0; i < v.input[4].length; i++) {
-                curBalance = await instance.playerBalance(v.input[4][i], {gas: v.gas});
-                console.log(v.input[4][i]);
-                console.log(v.output[0][i]);
-                // assert.equal(curBalance, v.output[0][i]);
-                console.log(curBalance);
-            }
-            //
-            totalGas += curGas;
-            curGas = await instance.clearState.estimateGas({gas: v.gas}) - 21000;
-            console.log(curGas);
-            totalGas += curGas;
-            console.log("Total gas for GasOptimizeSample: " + totalGas);
-        });
+
+    it("Passes testcase 1 " , async function() {
+        let totalGas = 0;
+        let defaultValue = 1000;
+        let defaultGas = 1000000;
+        let instance = await instanceFuture;
+        await instance.bet(2, {from: accounts[0], value: defaultValue, gas: defaultGas});
+        await instance.bet(3, {from: accounts[1], value: defaultValue, gas: defaultGas});
+        await instance.bet(6, {from: accounts[2], value: defaultValue, gas: defaultGas});
+        await instance.bet(7, {from: accounts[3], value: defaultValue, gas: defaultGas});
+        //
+        let curGas = 0;
+        curGas = await instance.bet.estimateGas(10, {from: accounts[4], value: defaultValue, gas: defaultGas}) - 21000;
+        console.log(curGas);
+        //
+        await instance.bet(10, {from: accounts[4], value: defaultValue, gas: defaultGas});
+        //
+        let curBalance = 0;
+        for (let i = 0; i < 5; i++) {
+            curBalance = await instance.playerBalance.call({from: accounts[i], gas: defaultGas});
+            assert.equal(curBalance, defaultValue);
+        }
+        //
+        totalGas += curGas;
+        curGas = await instance.clearState.estimateGas({gas: defaultGas}) - 21000;
+        console.log(curGas);
+        totalGas += curGas;
+        console.log("Total gas for GasOptimizeSample: " + totalGas);
+        //
+        await instance.clearState({gas: defaultGas});
     });
 
-    // after(async function() {
-    //     var totalGas = 0;
-    //     var instance = await instanceFuture;
-    //     var curGas = 0;
-    //     for (var v of testdata.vectors) {
-    //         curGas = await instance.distributePrizes.estimateGas(v.input[3], {gas: v.gas}) - 21000;
-    //         console.log(curGas);
-    //         totalGas += curGas;
-    //     }
-    //     console.log("Total gas for GasOptimizeSample: " + totalGas);
-    // });
-
-    // after(async function() {
-    //     var instance = await instanceFuture;
-    //     var curBalance = 0;
-    //     for (var i = 1; i < 6; i++) {
-    //         curBalance = await instance.playerBalance(i);
-    //         assert.equal(curBalance, 1000);
-    //         console.log(curBalance);
-    //     }
-    //     curBalance = await instance.playerBalance(5);
-    //     assert.equal(curBalance, 5000);
-    //     console.log(curBalance);
-    // });
-
-    // after(async function() {
-    //     var totalGas = 0;
-    //     var instance = await instanceFuture;
-    //     var curGas = 0;
-    //     for (var v of testdata.vectors) {
-    //         curGas = await instance.clearState.estimateGas({gas: v.gas}) - 21000;
-    //         console.log(curGas);
-    //         totalGas += curGas;
-    //     }
-    //     console.log("Total gas for GasOptimizeSample: " + totalGas);
-    // });
+    it("Passes testcase 2 " , async function() {
+        let totalGas = 0;
+        let defaultValue = 1000;
+        let defaultGas = 1000000;
+        let instance = await instanceFuture;
+        await instance.bet(5, {from: accounts[0], value: defaultValue, gas: defaultGas});
+        await instance.bet(5, {from: accounts[1], value: defaultValue, gas: defaultGas});
+        await instance.bet(5, {from: accounts[2], value: defaultValue, gas: defaultGas});
+        await instance.bet(5, {from: accounts[3], value: defaultValue, gas: defaultGas});
+        //
+        let curGas = 0;
+        curGas = await instance.bet.estimateGas(10, {from: accounts[4], value: defaultValue, gas: defaultGas}) - 21000;
+        console.log(curGas);
+        //
+        await instance.bet(8, {from: accounts[4], value: defaultValue, gas: defaultGas});
+        //
+        let curBalance = 0;
+        for (let i = 0; i < 4; i++) {
+            curBalance = await instance.playerBalance.call({from: accounts[i], gas: defaultGas});
+            assert.equal(curBalance, 2250);
+        }
+        curBalance = await instance.playerBalance.call({from: accounts[4], gas: defaultGas});
+        assert.equal(curBalance, 1000);
+        //
+        totalGas += curGas;
+        curGas = await instance.clearState.estimateGas({gas: defaultGas}) - 21000;
+        console.log(curGas);
+        totalGas += curGas;
+        console.log("Total gas for GasOptimizeSample: " + totalGas);
+        //
+        await instance.clearState({gas: defaultGas});
+    });
 
 });
