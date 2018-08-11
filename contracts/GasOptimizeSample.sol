@@ -22,11 +22,11 @@ contract GasOptimizeSample {
         playerBetsNumber[msg.sender] = _betNumber;
         totalBets += msg.value;
         if (players.length == 5) {
-            distributePrizes1(5);
+            distributePrizes2(5);
         }
     }
 
-    function clearState() public {
+    function clearState1() public {
         // Delete all the players for each number
         for (uint j = 1; j <= 10; j++) {
             for (uint k = 0; k < numberBetPlayers[j].length; k++) {
@@ -35,12 +35,22 @@ contract GasOptimizeSample {
             }
             numberBetPlayers[j].length = 0;
         }
-
         for (uint i = 0; i < players.length; i++) {
             players[i] = 0;
         }
-
         players.length = 0;
+        totalBets = 0;
+    }
+
+    function clearState2() public {
+        // Delete all the players for each number
+        for (uint j = 1; j <= 10; j++) {
+            for (uint k = 0; k < numberBetPlayers[j].length; k++) {
+                playerBetsNumber[numberBetPlayers[j][k]] = 0;
+            }
+            delete numberBetPlayers[j];
+        }
+        delete players;
         totalBets = 0;
     }
 
