@@ -3,6 +3,7 @@ var testdata = require('../data/BinaryIntSum.json');
 
 contract('BinaryIntSum', function(accounts) {
     var instanceFuture = BinaryIntSum.new();
+
     testdata.vectors.forEach(function(v, i) {
         it("Passes test vector " + i, async function() {
             var instance = await instanceFuture;

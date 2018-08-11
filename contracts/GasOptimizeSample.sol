@@ -22,7 +22,7 @@ contract GasOptimizeSample {
         playerBetsNumber[msg.sender] = _betNumber;
         totalBets += msg.value;
         if (players.length == 5) {
-            distributePrizes(5);
+            distributePrizes1(5);
         }
     }
 
@@ -48,7 +48,7 @@ contract GasOptimizeSample {
         return playerBalances[msg.sender];
     }
 
-    function distributePrizes(uint256 _numberWinner) private {
+    function distributePrizes1(uint256 _numberWinner) private {
         // Calculate winner's balance amount
         uint256 winnerBalance;
         uint i;
@@ -68,4 +68,29 @@ contract GasOptimizeSample {
             }
         }
     }
+
+    function distributePrizes2(uint256 _numberWinner) private {
+        // Calculate winner's balance amount
+        uint256 winnerBalance;
+        uint256 winnerCount;
+        uint i;
+
+        if (numberBetPlayers[_numberWinner].length > 0) {
+            winnerCount = numberBetPlayers[_numberWinner].length;
+            winnerBalance = totalBets / winnerCount;
+            // Apply rewards
+            for (i = 0; i < winnerCount; i++) {
+                playerBalances[numberBetPlayers[_numberWinner][i]] += winnerBalance;
+            }
+        } else {
+            require(players.length > 0);
+            winnerCount = players.length;
+            winnerBalance = totalBets / winnerCount;
+            // Apply rewards
+            for (i = 0; i < winnerCount; i++) {
+                playerBalances[players[i]] += winnerBalance;
+            }
+        }
+    }
+
 }

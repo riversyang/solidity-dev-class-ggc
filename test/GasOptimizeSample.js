@@ -1,7 +1,7 @@
 var GasOptimizeSample = artifacts.require("../contracts/GasOptimizeSample");
 
 contract('GasOptimizeSample', function(accounts) {
-    var instanceFuture = GasOptimizeSample.deployed();
+    var instanceFuture = GasOptimizeSample.new();
 
     it("Passes testcase 1 " , async function() {
         let totalGas = 0;
