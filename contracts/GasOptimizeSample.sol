@@ -1,33 +1,14 @@
 pragma solidity 0.4.24;
 
 contract GasOptimizeSample {
-    address owner;
-
-    // The minimum bet a user has to make to participate in the game
-    uint public minimumBet = 100 finney; // Equal to 0.1 ether
-
     // The total amount of Ether bet for this current game
     uint public totalBets;
-
-    // The total number of bets the users have made
-    uint public numberOfBets;
-
-    // The maximum amount of bets can be made for each game
-    uint public maxAmountOfBets = 10;
-
-    // The max amount of bets that cannot be exceeded to avoid excessive gas consumption
-    // when distributing the prizes and restarting the game
-    uint public constant LIMIT_AMOUNT_BETS = 100;
-
     // Array of players
     uint256[] public players;
-
     // Each number has an array of players. Associate each number with a bunch of players
     mapping(uint256 => uint256[]) numberBetPlayers;
-
     // The number that each player has bet for
     mapping(uint256 => uint256) playerBetsNumber;
-
     // The balance that each player owns
     mapping(uint256 => uint256) playerBalances;
 
@@ -42,7 +23,7 @@ contract GasOptimizeSample {
     )
         public
     {
-        for (uint i; i < _users.length; i++) {
+        for (uint i = 0; i < _users.length; i++) {
             players.push(_users[i]);
             numberBetPlayers[_betNumbers[i]].push(_users[i]);
             playerBetsNumber[_users[i]] = _betNumbers[i];
@@ -66,7 +47,10 @@ contract GasOptimizeSample {
 
         players.length = 0;
         totalBets = 0;
-        numberOfBets = 0;
+    }
+
+    function playerBalance(uint256 _user) public view returns (uint256) {
+        return playerBalances[_user];
     }
 
     function distributePrizes(uint256 _numberWinner) public {
