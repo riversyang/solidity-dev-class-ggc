@@ -34,13 +34,13 @@ contract BinaryIntSum {
         // nv = uint16(2) ** bitCount - 1;
 
         // standard-best: 18586
-        // nv = 1;
-        // uint16 tv = input;
-        // while (tv != 0) {
-        //     tv &= (tv - 1);
-        //     nv = nv + nv;
-        // }
-        // nv -= 1;
+        nv = 1;
+        uint16 tv = input;
+        while (tv != 0) {
+            tv &= (tv - 1);
+            nv = nv + nv;
+        }
+        nv -= 1;
 
         // assembly: 19876
         // assembly {
