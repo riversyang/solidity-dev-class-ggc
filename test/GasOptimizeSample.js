@@ -17,12 +17,12 @@ contract('GasOptimizeSample', function(accounts) {
         await instance.bet(8, {from: accounts[6], value: defaultValue, gas: defaultGas});
         await instance.bet(9, {from: accounts[7], value: defaultValue, gas: defaultGas});
         await instance.bet(4, {from: accounts[8], value: defaultValue, gas: defaultGas});
-        // 第十次下注前先预估一下这次调用会花费的 gas，这是基于前四次下注之后的状态
+        // 第 10 次下注前先预估一下这次调用会花费的 gas，这是基于前 9 次下注之后的状态
         let curGas = 0;
         curGas = await instance.bet.estimateGas(10, {from: accounts[9], value: defaultValue, gas: defaultGas}) - 21000;
         console.log(curGas);
         totalGas += curGas;
-        // 实际执行第十次下注
+        // 实际执行第 10 次下注
         await instance.bet(10, {from: accounts[9], value: defaultValue, gas: defaultGas});
         // 验证合约的处理结果
         let curBalance = 0;
@@ -51,12 +51,12 @@ contract('GasOptimizeSample', function(accounts) {
         await instance.bet(3, {from: accounts[6], value: defaultValue, gas: defaultGas});
         await instance.bet(9, {from: accounts[7], value: defaultValue, gas: defaultGas});
         await instance.bet(1, {from: accounts[8], value: defaultValue, gas: defaultGas});
-        // 第十次下注前先预估一下这次调用会花费的 gas，这是基于前四次下注之后的状态
+        // 第 10 次下注前先预估一下这次调用会花费的 gas，这是基于前 9 次下注之后的状态
         let curGas = 0;
         curGas = await instance.bet.estimateGas(10, {from: accounts[9], value: defaultValue, gas: defaultGas}) - 21000;
         console.log(curGas);
         totalGas += curGas;
-        // 实际执行第十次下注
+        // 实际执行第 10 次下注
         await instance.bet(10, {from: accounts[9], value: defaultValue, gas: defaultGas});
         // 验证合约的处理结果
         let curBalance = 0;

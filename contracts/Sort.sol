@@ -25,9 +25,7 @@ contract Sort {
         return input;
     }
 
-    function sort(uint[] arr, int low, int high)
-        private pure returns (uint[])
-    {
+    function sort(uint[] arr, int low, int high) private pure returns (uint[]) {
         if (low < high) {
             int pi = partition1(arr, low, high);
             sort(arr, low, pi - 1);
@@ -35,9 +33,7 @@ contract Sort {
         }
     }
 
-    function partition1(uint[] arr, int low, int high)
-        internal pure returns(int)
-    {
+    function partition1(uint[] arr, int low, int high) internal pure returns(int) {
         int pivot = int(arr[uint(high)]);
         int i = (low - 1); // index of smaller element
         for (int j = low; j < high; j++) {
@@ -54,9 +50,7 @@ contract Sort {
         return i + 1;
     }
 
-    function partition2(uint[] arr, int low, int high)
-        internal pure returns(int)
-    {
+    function partition2(uint[] arr, int low, int high) internal pure returns(int) {
         int pivot = int(arr[uint(high)]);
         int i = (low - 1); // index of smaller element
         for (int j = low; j < high; j++) {
@@ -69,9 +63,7 @@ contract Sort {
         return i + 1;
     }
 
-    function partition3(uint[] arr, int low, int high)
-        internal pure returns(int)
-    {
+    function partition3(uint[] arr, int low, int high) internal pure returns(int) {
         int pivot = int(arr[uint(high)]);
         int i = (low - 1); // index of smaller element
         for (int j = low; j < high; j++) {
